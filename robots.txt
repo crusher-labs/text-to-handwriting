@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://crusher-labs.github.io/text-to-handwriting/sitemap.xml

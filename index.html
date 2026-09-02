@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en"
+      data-default-theme="minimal"
+      data-theme-lock="minimal"
+      data-default-mode="dark"
+      data-default-brand="#0ea5e9">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Handwriting Converter - Free, No Watermark</title>
+    <!-- SEO-META-START -->
+    <meta name="description" content="Convert typed text into realistic handwritten pages for assignments and notes. Pick a handwriting style, ink color and paper, then download PNG pages. Free, private, no watermark, runs in your browser.">
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="canonical" href="https://crusher-labs.github.io/text-to-handwriting/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Web Utility Tools by CRUSHER">
+    <meta property="og:title" content="Text to Handwriting Converter - Web Utility Tools by CRUSHER">
+    <meta property="og:description" content="Convert typed text into realistic handwritten pages. Handwriting styles, ink colors, ruled paper, multi-page output. Free, private, no watermark.">
+    <meta property="og:url" content="https://crusher-labs.github.io/text-to-handwriting/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Text to Handwriting Converter - Web Utility Tools by CRUSHER">
+    <meta name="twitter:description" content="Convert typed text into realistic handwritten pages. Handwriting styles, ink colors, ruled paper, multi-page output. Free, private, no watermark.">
+    <!-- SEO-META-END -->
+    <link rel="icon" href="data:,">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' https://unpkg.com https://api.web3forms.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self';">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Caveat&family=Patrick+Hand&family=Indie+Flower&family=Homemade+Apple&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@1.2.1/dist/crusher-ui.min.css" integrity="sha384-Y8s5q9n5rodpO7nSyRNxbxlns7zYnuOEymBbSwEg9GmW2R/Zt3U4BWOZLb3q2NjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@1.2.1/dist/themes/minimal.css" integrity="sha384-FLhZ0Qhy8nUbGu4oSm0Vs5uPCL1RgZn+Ld2/fj3PrYDUMqltf2vObwpWHiOzRx4l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@1.2.1/dist/static/tool-shell.css" integrity="sha384-mWfiqr7mGlAa+yVw+7vt40gfFTtAhs2jjBYbTLTvNRYUtZEtAJ0YPHlTdB8kuhSE" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/crusher-ui-kit@1.2.1/dist/static/tool-shell.js" integrity="sha384-gNDnPKn5AoF0e4Q555fGbM+snO+UCP3/z4ErG3cyS/Akusg/bzTO+AYmG1WAMnab" crossorigin="anonymous"></script>
+    <style>
+        body {
+        font-family: 'Inter', sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    /* === Premium polish (2026-05-14) === */
+    body { position: relative; isolation: isolate; }
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0 0 auto 0;
+        block-size: 32rem;
+        background:
+            radial-gradient(ellipse 70% 50% at 50% -5%,
+                color-mix(in srgb, var(--crusher-color-brand-primary) 18%, transparent),
+                transparent 65%);
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.85;
+    }
+    ::selection { background: color-mix(in srgb, var(--crusher-color-brand-primary) 30%, transparent); }
+        /* PREMIUM-INPUT-START (until framework-feedback Section 6 ships) */
+        .crusher-tool-control {
+            background: color-mix(in srgb, var(--crusher-background-surface) 72%, transparent);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid color-mix(in srgb, var(--crusher-border-primary) 70%, transparent);
+            color: var(--crusher-text-primary);
+            padding: var(--crusher-spacing-3) var(--crusher-spacing-4);
+            border-radius: var(--crusher-radius-lg);
+            font-family: inherit;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .crusher-tool-control:hover { border-color: var(--crusher-border-primary); }
+        .crusher-tool-control:focus-visible {
+            border-color: var(--crusher-color-brand-primary);
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--crusher-color-brand-primary) 18%, transparent);
+            outline: none;
+            background: var(--crusher-background-surface);
+        }
+        .crusher-tool-control::placeholder {
+            color: var(--crusher-text-secondary);
+            opacity: 0.7;
+        }
+        .crusher-tool-control:focus::placeholder { opacity: 0.4; }
+        textarea.crusher-tool-control { resize: vertical; min-block-size: 4.5rem; }
+        /* PREMIUM-INPUT-END */
+    .crusher-tool-title {
+        font-family: 'Fraunces', 'Georgia', serif;
+        font-optical-sizing: auto;
+        font-variation-settings: 'opsz' 48, 'SOFT' 30;
+        font-weight: 500;
+        font-style: normal;
+        font-size: clamp(2rem, 4.5vw, 3rem);
+        line-height: 1.05;
+        letter-spacing: -0.025em;
+    }
+    .crusher-tool-action {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .crusher-tool-action:hover:not([disabled]) {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--crusher-color-brand-primary) 35%, transparent);
+    }
+        .tool-mono { font-family: 'JetBrains Mono', monospace; }
+
+        .tth-stack { display: grid; gap: var(--crusher-spacing-6); max-width: 52rem; margin-inline: auto; }
+        .tth-section { padding: var(--crusher-spacing-6); display: grid; gap: var(--crusher-spacing-4); }
+        .tth-input { min-block-size: 10rem; font-size: 1rem; }
+        .tth-row { display: flex; flex-wrap: wrap; gap: var(--crusher-spacing-4); }
+        .tth-field { display: grid; gap: var(--crusher-spacing-1); flex: 1 1 10rem; }
+        .tth-label { font-size: var(--crusher-font-size-sm); color: var(--crusher-text-secondary); }
+        .tth-actions { display: flex; flex-wrap: wrap; gap: var(--crusher-spacing-3); justify-content: center; }
+        .tth-action {
+            padding-inline: var(--crusher-spacing-6); padding-block: var(--crusher-spacing-2);
+            border-radius: var(--crusher-radius-full); font-weight: 600;
+        }
+        .tth-action[disabled] { opacity: 0.5; cursor: not-allowed; }
+        .tth-hint { text-align: center; font-size: var(--crusher-font-size-sm); color: var(--crusher-text-secondary); margin: 0; }
+
+        .tth-pages { display: grid; gap: var(--crusher-spacing-4); }
+        .tth-page-card { display: grid; gap: var(--crusher-spacing-2); justify-items: center; }
+        .tth-page-card canvas {
+            inline-size: 100%;
+            block-size: auto;
+            border-radius: var(--crusher-radius-md);
+            box-shadow: var(--crusher-shadow-lg);
+        }
+        .tth-page-bar {
+            display: flex; align-items: center; gap: var(--crusher-spacing-3);
+            font-size: var(--crusher-font-size-sm); color: var(--crusher-text-secondary);
+        }
+        .tth-download {
+            padding-inline: var(--crusher-spacing-4); padding-block: var(--crusher-spacing-1);
+            border-radius: var(--crusher-radius-full); font-weight: 600; font-size: var(--crusher-font-size-sm);
+        }
+
+        .tth-prose { display: grid; gap: var(--crusher-spacing-3); }
+        .tth-prose h2 {
+            font-family: 'Fraunces', 'Georgia', serif;
+            font-weight: 500; font-size: 1.5rem; letter-spacing: -0.015em;
+            margin: 0;
+        }
+        .tth-prose h3 { font-size: 1.05rem; font-weight: 600; margin: 0; }
+        .tth-prose p { margin: 0; color: var(--crusher-text-secondary); line-height: 1.65; }
+        .tth-prose a { color: var(--crusher-color-brand-primary); }
+        .tth-faq { border-top: 1px solid var(--crusher-border-primary); }
+        .tth-faq summary { cursor: pointer; padding-block: var(--crusher-spacing-3); font-weight: 600; }
+        .tth-faq p { padding-block-end: var(--crusher-spacing-3); }
+
+        .tool-feedback {
+            width: min(100%, 56rem);
+            margin: var(--crusher-spacing-8) auto var(--crusher-spacing-6);
+            padding-inline: var(--crusher-spacing-4);
+        }
+        .tool-feedback-trigger {
+            cursor: pointer;
+            padding: var(--crusher-spacing-2) var(--crusher-spacing-3);
+            font-size: var(--crusher-font-size-sm);
+            color: var(--crusher-text-secondary);
+            border-radius: var(--crusher-radius-md);
+            list-style: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--crusher-spacing-2);
+            transition: color var(--crusher-motion-duration-fast) var(--crusher-motion-easing-standard);
+        }
+        .tool-feedback-trigger::-webkit-details-marker { display: none; }
+        .tool-feedback-trigger::before {
+            content: '+';
+            display: inline-block;
+            font-weight: 700;
+            color: var(--crusher-color-brand-primary);
+        }
+        .tool-feedback-details[open] .tool-feedback-trigger::before { content: '−'; }
+        .tool-feedback-trigger:hover { color: var(--crusher-color-brand-primary); }
+        .tool-feedback-form {
+            margin-top: var(--crusher-spacing-3);
+            padding: var(--crusher-spacing-4);
+            border: 1px solid var(--crusher-border-primary);
+            border-radius: var(--crusher-radius-lg);
+            background: var(--crusher-background-surface);
+            display: grid;
+            gap: var(--crusher-spacing-3);
+        }
+        .tool-feedback-field { display: grid; gap: var(--crusher-spacing-1); }
+        .tool-feedback-field > span {
+            font-size: var(--crusher-font-size-xs);
+            color: var(--crusher-text-secondary);
+            font-weight: 500;
+        }
+        .tool-feedback-submit {
+            padding-inline: var(--crusher-spacing-4);
+            padding-block: var(--crusher-spacing-2);
+        }
+        .tool-feedback-submit[disabled] { opacity: 0.6; cursor: not-allowed; }
+        .tool-feedback-status {
+            margin: 0;
+            min-block-size: 1.25rem;
+            font-size: var(--crusher-font-size-sm);
+            color: var(--crusher-text-secondary);
+        }
+        .tool-feedback-status[data-kind="ok"] { color: var(--crusher-color-brand-primary); }
+        .tool-feedback-status[data-kind="error"] { color: #dc2626; }
+        .tool-feedback-honey { position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="crusher-tool-page">
+
+    <main class="crusher-tool-shell">
+        <header class="crusher-tool-header">
+            <h1 class="crusher-tool-title">Text to Handwriting Converter</h1>
+            <p class="crusher-tool-lede">Turn typed text into realistic handwritten pages. Pick a style, an ink and a paper, download PNG pages. No watermark, no upload.</p>
+        </header>
+
+        <div class="tth-stack">
+            <section class="crusher-tool-surface tth-section">
+                <div>
+                    <label class="tth-label" for="text-input">Your text</label>
+                    <textarea id="text-input" class="crusher-tool-control tth-input" placeholder="Type or paste the text you want handwritten. Blank lines start a new paragraph." maxlength="50000"></textarea>
+                </div>
+
+                <div class="tth-row">
+                    <div class="tth-field">
+                        <label class="tth-label" for="font-sel">Handwriting style</label>
+                        <select id="font-sel" class="crusher-tool-control">
+                            <option value="Caveat" selected>Caveat (neat cursive)</option>
+                            <option value="Patrick Hand">Patrick Hand (clear print)</option>
+                            <option value="Indie Flower">Indie Flower (rounded)</option>
+                            <option value="Shadows Into Light">Shadows Into Light (slim)</option>
+                            <option value="Homemade Apple">Homemade Apple (messy cursive)</option>
+                        </select>
+                    </div>
+                    <div class="tth-field">
+                        <label class="tth-label" for="ink-sel">Ink</label>
+                        <select id="ink-sel" class="crusher-tool-control">
+                            <option value="#2743b3" selected>Blue pen</option>
+                            <option value="#1c1c1c">Black pen</option>
+                            <option value="#14532d">Green pen</option>
+                        </select>
+                    </div>
+                    <div class="tth-field">
+                        <label class="tth-label" for="size-sel">Text size</label>
+                        <select id="size-sel" class="crusher-tool-control">
+                            <option value="34">Small</option>
+                            <option value="42" selected>Medium</option>
+                            <option value="52">Large</option>
+                        </select>
+                    </div>
+                    <div class="tth-field">
+                        <label class="tth-label" for="paper-sel">Paper</label>
+                        <select id="paper-sel" class="crusher-tool-control">
+                            <option value="ruled-margin" selected>Ruled with margin</option>
+                            <option value="ruled">Ruled</option>
+                            <option value="plain">Plain</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tth-actions">
+                    <button id="generate-btn" type="button" class="crusher-tool-action tth-action">Generate</button>
+                    <button id="download-all-btn" type="button" class="crusher-tool-action tth-action" disabled>Download all pages</button>
+                </div>
+                <p class="tth-hint" id="hint">Pages are A4-proportioned PNGs, ready to print or submit.</p>
+
+                <div class="tth-pages" id="pages" aria-live="polite"></div>
+            </section>
+
+            <section class="crusher-tool-surface tth-section tth-prose">
+                <h2>Convert text to handwriting online</h2>
+                <p>Type or paste your text, choose one of five handwriting styles, and this tool renders it as handwritten pages on ruled or plain paper: blue, black or green ink, realistic letter jitter, and automatic page breaks for long documents. Each page downloads as a clean PNG with no watermark.</p>
+                <p>Students use it to turn typed notes into handwritten-style assignment pages; teachers use it for worksheets; anyone can use it for letters, journals or a personal touch on a printed note. Long text flows onto as many A4-proportioned pages as it needs.</p>
+                <h3>Private by design</h3>
+                <p>Everything renders on a canvas in your own browser tab. Nothing you type is uploaded, stored or logged; there is no server behind this page. More free tools like this live on the <a href="https://tools.muhammadhassaanjaved.com/">Web Utility Tools hub</a>.</p>
+                <details class="tth-faq">
+                    <summary>Does it look like real handwriting?</summary>
+                    <p>Each character gets a slight random tilt, size and baseline shift, so lines do not look machine-perfect. Pick "Homemade Apple" for the most natural messy-cursive effect, or "Patrick Hand" for tidy print-style writing.</p>
+                </details>
+                <details class="tth-faq">
+                    <summary>Can I print the pages as A4?</summary>
+                    <p>Yes. Pages are generated at A4 proportions (1240 x 1754 px). Print them at "fit to page" on A4 paper and the ruling lines up naturally.</p>
+                </details>
+                <details class="tth-faq">
+                    <summary>Is there a length limit?</summary>
+                    <p>Up to 50,000 characters per run, which is roughly 25-30 handwritten pages. The work happens on your device, so very long texts just take a moment longer.</p>
+                </details>
+            </section>
+        </div>
+    </main>
+
+    <a href="https://tools.muhammadhassaanjaved.com/" id="hub-bubble" class="crusher-tool-fab" title="View All Tools" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+    </a>
+
+    <crusher-style-switcher
+      default-theme="minimal"
+      default-brand="#0ea5e9"
+      hide-themes
+      hide-theme-color>
+        <svg slot="mode-light-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"/></svg>
+        <svg slot="mode-dark-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+    </crusher-style-switcher>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/crusher-ui-kit@1.2.1/dist/crusher-ui.standalone.esm.js" integrity="sha384-49DxFeXn1ckPw9AmqDudkw1VT513Id+j1qJmkXCZBAiIaNechVSDTNnsKThtI54K" crossorigin="anonymous"></script>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const fontSel = document.getElementById('font-sel');
+        const inkSel = document.getElementById('ink-sel');
+        const sizeSel = document.getElementById('size-sel');
+        const paperSel = document.getElementById('paper-sel');
+        const generateBtn = document.getElementById('generate-btn');
+        const downloadAllBtn = document.getElementById('download-all-btn');
+        const pagesEl = document.getElementById('pages');
+        const hintEl = document.getElementById('hint');
+
+        const PAGE_W = 1240, PAGE_H = 1754;
+        const MARGIN_TOP = 150, MARGIN_BOTTOM = 110, MARGIN_RIGHT = 90;
+
+        let pageCanvases = [];
+
+        // Deterministic-ish jitter so regenerating with the same text looks stable per char index.
+        function jitter(seed, range) {
+            const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+            return ((x - Math.floor(x)) - 0.5) * 2 * range;
+        }
+
+        function layoutLines(ctx, text, font, size, maxWidth) {
+            ctx.font = `${size}px "${font}"`;
+            const lines = [];
+            for (const para of text.split('\n')) {
+                if (!para.trim()) { lines.push(''); continue; }
+                let line = '';
+                for (const word of para.split(/\s+/)) {
+                    const probe = line ? line + ' ' + word : word;
+                    if (ctx.measureText(probe).width > maxWidth && line) {
+                        lines.push(line);
+                        line = word;
+                    } else {
+                        line = probe;
+                    }
+                }
+                if (line) lines.push(line);
+            }
+            return lines;
+        }
+
+        function drawPaper(ctx, style, lineHeight, marginLeft) {
+            ctx.fillStyle = '#fbfaf4';
+            ctx.fillRect(0, 0, PAGE_W, PAGE_H);
+            if (style !== 'plain') {
+                ctx.strokeStyle = '#c3d0e2';
+                ctx.lineWidth = 1.5;
+                for (let y = MARGIN_TOP; y <= PAGE_H - MARGIN_BOTTOM + lineHeight * 0.35; y += lineHeight) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y + lineHeight * 0.35);
+                    ctx.lineTo(PAGE_W, y + lineHeight * 0.35);
+                    ctx.stroke();
+                }
+            }
+            if (style === 'ruled-margin') {
+                ctx.strokeStyle = '#e8938c';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(marginLeft - 24, 0);
+                ctx.lineTo(marginLeft - 24, PAGE_H);
+                ctx.stroke();
+            }
+        }
+
+        function drawLine(ctx, line, x, y, font, size, ink, seedBase) {
+            ctx.fillStyle = ink;
+            let cx = x;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                const seed = seedBase + i;
+                const rot = jitter(seed, 0.03);
+                const dy = jitter(seed + 0.5, size * 0.035);
+                const scale = 1 + jitter(seed + 0.25, 0.04);
+                ctx.save();
+                ctx.translate(cx, y + dy);
+                ctx.rotate(rot);
+                ctx.font = `${Math.round(size * scale)}px "${font}"`;
+                ctx.fillText(ch, 0, 0);
+                ctx.restore();
+                ctx.font = `${size}px "${font}"`;
+                cx += ctx.measureText(ch).width + jitter(seed + 0.75, size * 0.015);
+            }
+        }
+
+        async function generate() {
+            const text = textInput.value.replace(/\r\n/g, '\n');
+            if (!text.trim()) {
+                hintEl.textContent = 'Type some text first.';
+                return;
+            }
+            const font = fontSel.value;
+            const ink = inkSel.value;
+            const size = parseInt(sizeSel.value, 10);
+            const paper = paperSel.value;
+            const marginLeft = paper === 'ruled-margin' ? 140 : 100;
+            const lineHeight = Math.round(size * 1.55);
+
+            generateBtn.disabled = true;
+            hintEl.textContent = 'Rendering…';
+            try {
+                await document.fonts.load(`${size}px "${font}"`, 'AaBbGg');
+            } catch (e) { /* fall back to whatever the canvas resolves */ }
+
+            const measure = document.createElement('canvas').getContext('2d');
+            const lines = layoutLines(measure, text, font, size, PAGE_W - marginLeft - MARGIN_RIGHT);
+            const linesPerPage = Math.floor((PAGE_H - MARGIN_TOP - MARGIN_BOTTOM) / lineHeight);
+
+            pagesEl.textContent = '';
+            pageCanvases = [];
+            for (let p = 0; p * linesPerPage < lines.length; p++) {
+                const canvas = document.createElement('canvas');
+                canvas.width = PAGE_W;
+                canvas.height = PAGE_H;
+                const ctx = canvas.getContext('2d');
+                drawPaper(ctx, paper, lineHeight, marginLeft);
+                ctx.textBaseline = 'alphabetic';
+                const slice = lines.slice(p * linesPerPage, (p + 1) * linesPerPage);
+                slice.forEach((line, i) => {
+                    if (!line) return;
+                    const y = MARGIN_TOP + (i + 1) * lineHeight - Math.round(lineHeight * 0.35);
+                    drawLine(ctx, line, marginLeft, y, font, size, ink, (p * linesPerPage + i) * 1000);
+                });
+                pageCanvases.push(canvas);
+
+                const card = document.createElement('div');
+                card.className = 'tth-page-card';
+                card.appendChild(canvas);
+                const bar = document.createElement('div');
+                bar.className = 'tth-page-bar';
+                const label = document.createElement('span');
+                label.textContent = `Page ${p + 1}`;
+                const dl = document.createElement('button');
+                dl.type = 'button';
+                dl.className = 'crusher-tool-action tth-download';
+                dl.textContent = 'Download PNG';
+                const pageNo = p + 1;
+                dl.addEventListener('click', () => downloadPage(pageNo));
+                bar.append(label, dl);
+                card.appendChild(bar);
+                pagesEl.appendChild(card);
+            }
+
+            hintEl.textContent = `${pageCanvases.length} page${pageCanvases.length > 1 ? 's' : ''} rendered.`;
+            downloadAllBtn.disabled = pageCanvases.length === 0;
+            generateBtn.disabled = false;
+        }
+
+        function downloadPage(n) {
+            const canvas = pageCanvases[n - 1];
+            if (!canvas) return;
+            canvas.toBlob(blob => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `handwriting-page-${n}.png`;
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+            }, 'image/png');
+        }
+
+        generateBtn.addEventListener('click', generate);
+        downloadAllBtn.addEventListener('click', () => {
+            pageCanvases.forEach((c, i) => setTimeout(() => downloadPage(i + 1), i * 300));
+        });
+    </script>
+
+    <section class="tool-feedback" aria-label="Tool feedback">
+        <details class="tool-feedback-details">
+            <summary class="tool-feedback-trigger">Suggest an improvement</summary>
+            <form id="tool-feedback-form" class="tool-feedback-form" novalidate>
+                <label class="tool-feedback-field">
+                    <span>What could be better?</span>
+                    <textarea name="improvement" rows="3" required maxlength="2000" class="crusher-tool-control" placeholder="Tell me what's missing or what could work better…"></textarea>
+                </label>
+                <label class="tool-feedback-field">
+                    <span>Your email (optional, only if you want a reply)</span>
+                    <input type="email" name="replyto" maxlength="200" class="crusher-tool-control" placeholder="your@email.com">
+                </label>
+                <input type="text" name="botcheck" class="tool-feedback-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <div>
+                    <button type="submit" class="crusher-tool-action tool-feedback-submit">Send</button>
+                </div>
+                <p id="tool-feedback-status" class="tool-feedback-status" role="status" aria-live="polite"></p>
+            </form>
+        </details>
+    </section>
+
+    <script>
+        (function() {
+            const KEY = '30e570c5-aeeb-439d-8a8a-bd2516a5dc5d';
+            const ENDPOINT = 'https://api.web3forms.com/submit';
+            const form = document.getElementById('tool-feedback-form');
+            const status = document.getElementById('tool-feedback-status');
+            if (!form || !status) return;
+            const toolName = (document.title || 'tool').trim();
+            const subject = '[' + toolName + '] Improvement suggestion';
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const fd = new FormData(form);
+                fd.set('access_key', KEY);
+                fd.set('subject', subject);
+                fd.set('from_name', toolName);
+                const btn = form.querySelector('button[type="submit"]');
+                const orig = btn.textContent;
+                btn.disabled = true; btn.textContent = 'Sending…';
+                status.textContent = ''; delete status.dataset.kind;
+                try {
+                    const res = await fetch(ENDPOINT, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+                    const data = await res.json();
+                    if (data.success) {
+                        form.reset();
+                        status.textContent = 'Thanks, your suggestion is in.';
+                        status.dataset.kind = 'ok';
+                    } else {
+                        status.textContent = data.message || 'Sorry, that did not go through. Try again later?';
+                        status.dataset.kind = 'error';
+                    }
+                } catch (err) {
+                    status.textContent = 'Network error. Try again?';
+                    status.dataset.kind = 'error';
+                }
+                finally {
+                    btn.disabled = false; btn.textContent = orig;
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
